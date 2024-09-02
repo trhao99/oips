@@ -36,10 +36,10 @@ void Build(int root, int l, int r) {
   int Mid = l + r >> 1;
   Build(root << 1, l, Mid);
   Build(root << 1 | 1, Mid + 1, r);
-  PushUp(root);
+  PushUp(root);//从底向上构造线段树Tree
 }
 
-matrix Query(int root, int l, int r, int L, int R) {
+matrix Query(int root, int l, int r, int L, int R) {// Query结果和Tree相关
   if (L <= l && r <= R) return Tree[root];
   int Mid = l + r >> 1;
   if (R <= Mid) return Query(root << 1, l, Mid, L, R);
@@ -59,7 +59,7 @@ void Modify(int root, int l, int r, int pos) {
     Modify(root << 1, l, Mid, pos);
   else
     Modify(root << 1 | 1, Mid + 1, r, pos);
-  PushUp(root);
+  PushUp(root);//维护线段树
 }
 
 void Update(int x, int val) {
@@ -73,7 +73,7 @@ void Update(int x, int val) {
            p[x]);  // 进行修改(x点的g矩阵已经进行修改但线段树上的未进行修改)
     matrix now = Query(1, 1, n, p[top[x]], End[top[x]]);
     // 查询top[x]的新g矩阵
-    x = fa[top[x]];
+    x = fa[top[x]];//依次向上修改Tree
     g[x].g[0][0] +=
         max(now.g[0][0], now.g[1][0]) - max(last.g[0][0], last.g[1][0]);
     g[x].g[0][1] = g[x].g[0][0];
@@ -98,10 +98,10 @@ void DFS1(int u) {
     dis[v] = dis[u] + 1;
     fa[v] = u;
     DFS1(v);
-    sz[u] += sz[v];
+    sz[u] += sz[v];//以u为根的树大小为sz[u]
     if (sz[v] > Max) {
       Max = sz[v];
-      son[u] = v;
+      son[u] = v;//u的重子节点是v
     }
     f[u][1] += f[v][0];
     f[u][0] += max(f[v][0], f[v][1]);
@@ -111,9 +111,9 @@ void DFS1(int u) {
 
 void DFS2(int u, int t) {
   top[u] = t;
-  p[u] = ++cnt;
-  id[cnt] = u;
-  End[t] = cnt;
+  p[u] = ++cnt;//点id到序号
+  id[cnt] = u;//序号到点id
+  End[t] = cnt;//以t为链首的重链的尾部节点为End[t]
   g[u].g[1][0] = a[u];
   g[u].g[1][1] = -INF;
   if (!son[u]) return;
@@ -122,13 +122,16 @@ void DFS2(int u, int t) {
     int v = To[i];
     if (v == fa[u] || v == son[u]) continue;
     DFS2(v, v);
-    g[u].g[0][0] += max(f[v][0], f[v][1]);
-    g[u].g[1][0] += f[v][0];
+    g[u].g[0][0] += max(f[v][0], f[v][1]);//不选u点,u的子节点可选可不选，取最大值
+    g[u].g[1][0] += f[v][0];//选u点,子节点不选
     // g矩阵根据f[i][0/1]求出
   }
   g[u].g[0][1] = g[u].g[0][0];
 }
-
+/*
+* 1. 为啥不能正常算，非得写一个奇怪的矩乘法
+* 2. 重链维护的意义何在。
+*/
 int main() {
   scanf("%d%d", &n, &m);
   for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
