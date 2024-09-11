@@ -7,8 +7,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": false,
-      "cwd": "/home/trhao/Documents/projects/oips/luogu",
-      "program": "/home/trhao/Documents/projects/oips/luogu/build/Debug/outDebug",
+      "cwd": "${workspaceFolder}",
+      "program": "${fileDirname}/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
