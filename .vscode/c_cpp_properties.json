@@ -1,14 +1,14 @@
 {
   "configurations": [
     {
-      "name": "linux-gcc-x64",
+      "name": "linux-clangd-arm64",
       "includePath": [
         "${workspaceFolder}/**"
       ],
-      "compilerPath": "/usr/bin/gcc",
+      "compilerPath": "/usr/bin/clangd",
       "cStandard": "${default}",
       "cppStandard": "${default}",
-      "intelliSenseMode": "linux-gcc-x64",
+      "intelliSenseMode": "linux-clang-arm64",
       "compilerArgs": [
         ""
       ]
