@@ -24,12 +24,18 @@ int main() {
       l.push_back(w2n[w]);
     }
   }
-  sort(l.begin(), l.end(),
-       [](int a, int b) { return to_string(a) < to_string(b); });
-  int res = 0;
-  for (int num : l) {
-    res = res * 10 + num;
+  sort(l.begin(), l.end());
+  string result;
+  for (int i : l) {
+    if (i < 10 && !result.empty())
+      result += "0"; // 加先导零
+    result += to_string(i);
   }
-  printf("%d", res);
+  unsigned long long No0 = result.find_first_not_of('0');
+  if (No0 != string::npos)
+    result = result.substr(No0);
+  else
+    result = "0";
+  cout << result;
   return 0;
 }
